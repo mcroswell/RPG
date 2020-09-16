@@ -14,10 +14,6 @@ namespace RPG.Dialogue
 
         Dictionary<string, DialogueNode> nodeLookup = new Dictionary<string, DialogueNode>();
 
-#if UNITY_EDITOR
-        private void Awake() {
-        }
-#endif
         private void OnValidate() {
             nodeLookup.Clear();
             foreach (DialogueNode node in GetAllNodes())
@@ -38,7 +34,7 @@ namespace RPG.Dialogue
 
         public IEnumerable<DialogueNode> GetAllChildren(DialogueNode parentNode)
         {
-            foreach (string childID in parentNode.children)
+            foreach (string childID in parentNode.GetChildren())
             {
                 if (nodeLookup.ContainsKey(childID))
                 {
@@ -47,6 +43,7 @@ namespace RPG.Dialogue
             }
         }
 
+#if UNITY_EDITOR
         public void CreateNode(DialogueNode parent)
         {
             DialogueNode newNode = CreateInstance<DialogueNode>();
@@ -54,30 +51,34 @@ namespace RPG.Dialogue
             Undo.RegisterCreatedObjectUndo(newNode, "Created Dialogue Node");
             if (parent != null)
             {
-                parent.children.Add(newNode.name);
+                parent.AddChild(newNode.name);
             }
+            Undo.RecordObject(this, "Added Dialogue Node");
             nodes.Add(newNode);
             OnValidate();
         }
 
         public void DeleteNode(DialogueNode nodeToDelete)
         {
+            Undo.RecordObject(this, "Deleted Dialogue Node");
             nodes.Remove(nodeToDelete);
-            Undo.DestroyObjectImmediate(nodeToDelete);
             OnValidate();
             CleanDanglingChildren(nodeToDelete);
+            Undo.DestroyObjectImmediate(nodeToDelete);
         }
 
         private void CleanDanglingChildren(DialogueNode nodeToDelete)
         {
             foreach (DialogueNode node in GetAllNodes())
             {
-                node.children.Remove(nodeToDelete.name);
+                node.RemoveChild(nodeToDelete.name);
             }
         }
+#endif
 
         public void OnBeforeSerialize()
         {
+#if UNITY_EDITOR
             if (nodes.Count == 0)
             {
                 CreateNode(null);
@@ -93,6 +94,7 @@ namespace RPG.Dialogue
                     }
                 }
             }
+#endif
         }
 
         public void OnAfterDeserialize()
