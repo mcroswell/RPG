@@ -8,6 +8,8 @@ namespace RPG.Dialogue
     public class DialogueNode : ScriptableObject
     {
         [SerializeField]
+        bool isPlayerSpeaking = false;
+        [SerializeField]
         string text;
         [SerializeField]
         List<string> children = new List<string>();
@@ -29,6 +31,11 @@ namespace RPG.Dialogue
             return children;
         }
 
+        public bool IsPlayerSpeaking()
+        {
+            return isPlayerSpeaking;
+        }
+
 #if UNITY_EDITOR
         public void SetPosition(Vector2 newPosition)
         {
@@ -45,6 +52,13 @@ namespace RPG.Dialogue
                 text = newText;
                 EditorUtility.SetDirty(this);
             }
+        }
+
+        public void SetPlayerIsSpeaking(bool newIsPlayerSpeaking)
+        {
+            Undo.RecordObject(this, "Changed Dialogue Node Speaker");
+            isPlayerSpeaking = newIsPlayerSpeaking;
+            EditorUtility.SetDirty(this);
         }
 
         public void AddChild(string childID)
