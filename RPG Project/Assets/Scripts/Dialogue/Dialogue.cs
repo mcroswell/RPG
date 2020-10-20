@@ -11,6 +11,8 @@ namespace RPG.Dialogue
     {
         [SerializeField]
         List<DialogueNode> nodes = new List<DialogueNode>();
+        [SerializeField]
+        Vector2 newNodeOffset = new Vector2(250, 0);
 
         [NonSerialized]
         Vector2 newNodeOffset = new Vector2(250, 0);
@@ -49,6 +51,23 @@ namespace RPG.Dialogue
 #if UNITY_EDITOR
         public void CreateNode(DialogueNode parent)
         {
+            DialogueNode newNode = MakeNode(parent);
+            Undo.RegisterCreatedObjectUndo(newNode, "Created Dialogue Node");
+            Undo.RecordObject(this, "Added Dialogue Node");
+            AddNode(newNode);
+        }
+
+        public void DeleteNode(DialogueNode nodeToDelete)
+        {
+            Undo.RecordObject(this, "Deleted Dialogue Node");
+            nodes.Remove(nodeToDelete);
+            OnValidate();
+            CleanDanglingChildren(nodeToDelete);
+            Undo.DestroyObjectImmediate(nodeToDelete);
+        }
+
+        private DialogueNode MakeNode(DialogueNode parent)
+        {
             DialogueNode newNode = CreateInstance<DialogueNode>();
             newNode.name = Guid.NewGuid().ToString();
             if (parent != null)
@@ -63,7 +82,7 @@ namespace RPG.Dialogue
             OnValidate();
         }
 
-        public void DeleteNode(DialogueNode nodeToDelete)
+        private void AddNode(DialogueNode newNode)
         {
             Undo.RecordObject(this, "Deleted Dialogue Node");
             nodes.Remove(nodeToDelete);
@@ -86,7 +105,8 @@ namespace RPG.Dialogue
 #if UNITY_EDITOR
             if (nodes.Count == 0)
             {
-                CreateNode(null);
+                DialogueNode newNode = MakeNode(null);
+                AddNode(newNode);
             }
 
             if (AssetDatabase.GetAssetPath(this) != "")
