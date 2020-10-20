@@ -22,7 +22,7 @@ namespace RPG.Attributes
         LazyValue<float> healthPoints;
 
         bool isDead = false;
-
+        public bool bNeverDie = false;
         private void Awake() {
             healthPoints = new LazyValue<float>(GetInitialHealth);
         }
@@ -54,11 +54,18 @@ namespace RPG.Attributes
         {
             healthPoints.value = Mathf.Max(healthPoints.value - damage, 0);
             
-            if(healthPoints.value == 0)
+            if(healthPoints.value <= 0) // mlc changes to <= instead of just ==
             {
-                onDie.Invoke();
-                Die();
-                AwardExperience(instigator);
+                if (bNeverDie && (gameObject.CompareTag("Player") || gameObject.name == "Player" )) // mlc adds bNeverDie
+                { 
+                        healthPoints.value = 1;
+                }
+                else
+                {
+                    onDie.Invoke();
+                    Die();
+                    AwardExperience(instigator);
+                }
             } 
             else
             {

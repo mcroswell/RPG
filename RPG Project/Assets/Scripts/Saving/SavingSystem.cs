@@ -17,6 +17,10 @@ namespace GameDevTV.Saving
     /// </summary>
     public class SavingSystem : MonoBehaviour
     {
+        //mlc adds:
+        public bool _restoreState = false;
+        public bool _saveState = false;
+
         /// <summary>
         /// Will load the last scene that was saved and restore the state. This
         /// must be run as a coroutine.
@@ -31,7 +35,10 @@ namespace GameDevTV.Saving
                 buildIndex = (int)state["lastSceneBuildIndex"];
             }
             yield return SceneManager.LoadSceneAsync(buildIndex);
-            RestoreState(state);
+            if (_restoreState)
+            {
+                RestoreState(state);
+            }
         }
 
         /// <summary>
@@ -41,7 +48,10 @@ namespace GameDevTV.Saving
         {
             Dictionary<string, object> state = LoadFile(saveFile);
             CaptureState(state);
-            SaveFile(saveFile, state);
+            if (_saveState)
+            {
+                SaveFile(saveFile, state);
+            }
         }
 
         /// <summary>
@@ -62,6 +72,7 @@ namespace GameDevTV.Saving
         private Dictionary<string, object> LoadFile(string saveFile)
         {
             string path = GetPathFromSaveFile(saveFile);
+            Debug.Log($"Save file location = {path}");
             if (!File.Exists(path))
             {
                 return new Dictionary<string, object>();

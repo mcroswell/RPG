@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 6ee87022-6af4-474a-bcfa-54a3a1c5114c
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 1
-  text: 
+  text: I talk as player.
   children:
   - f9d943b2-e9c5-4713-a42e-316d844ff93c
   rect:
@@ -56,7 +56,7 @@ MonoBehaviour:
   m_Name: 9841c466-a290-4bdb-a3dc-18ad076a136e
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 1
-  text: 
+  text: Howdy
   children: []
   rect:
     serializedVersion: 2
@@ -77,14 +77,14 @@ MonoBehaviour:
   m_Name: 92ac522a-64e4-4099-85fb-f42c5b0eca73
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 0
-  text: asd;fkljas;
+  text: What you want?
   children:
   - 08b09d6e-05e5-4eab-b522-5b357cdca75b
   - 6ee87022-6af4-474a-bcfa-54a3a1c5114c
   rect:
     serializedVersion: 2
-    x: 286
-    y: 244
+    x: 257
+    y: 257
     width: 200
     height: 100
 --- !u!114 &-5664070655272407355
@@ -145,7 +145,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 1
   text: 
-  children: []
+  children:
+  - 97c693da-0a34-4858-98dc-0b494d144721
   rect:
     serializedVersion: 2
     x: 1084
@@ -175,6 +176,7 @@ MonoBehaviour:
   - {fileID: -9179962637027245633}
   - {fileID: 2794928549386373743}
   - {fileID: -1619226203625175059}
+  - {fileID: 8579280432070042264}
 --- !u!114 &2794928549386373743
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,5 +243,26 @@ MonoBehaviour:
     serializedVersion: 2
     x: 30
     y: 113
+    width: 200
+    height: 100
+--- !u!114 &8579280432070042264
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d682c531190610744a9a5e8627450547, type: 3}
+  m_Name: 97c693da-0a34-4858-98dc-0b494d144721
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  text: 
+  children: []
+  rect:
+    serializedVersion: 2
+    x: 749
+    y: 527
     width: 200
     height: 100
